@@ -94,11 +94,14 @@ body {
   flex: 1;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-1px);
 }
 
 .nav-button.active {
@@ -110,7 +113,6 @@ body {
 .nav-button.active:hover {
   background: linear-gradient(135deg, #0d47a1, #1565c0);
   color: white;
-  transform: none;
 }
 
 /* Content */
@@ -304,4 +306,3 @@ body {
   border: 2px solid #dee2e6;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-

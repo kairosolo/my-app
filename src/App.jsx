@@ -1,4 +1,5 @@
 import React, { useState, createContext, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import './App.css';
 
 const AuthContext = createContext();
@@ -36,29 +37,26 @@ const Auth = ({ children }) => {
 
 const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an Auth');
-  }
+  if (!context) throw new Error('useAuth must be used within an Auth');
   return context;
 };
 
-const Login = ({ onLoginSuccess }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
-
     if (!username || !password) {
       setError('Please fill in all fields');
       return;
     }
-
     if (login(username, password)) {
-      onLoginSuccess();
+      navigate('/');
     } else {
       setError('Invalid username or password');
     }
@@ -71,23 +69,11 @@ const Login = ({ onLoginSuccess }) => {
         <div className="form-container">
           <div className="form-group">
             <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-            />
+            <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter your username" />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-            />
+            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" />
           </div>
           {error && <div className="error-message">{error}</div>}
           <button onClick={handleSubmit} className="login-button">Login</button>
@@ -103,7 +89,13 @@ const Login = ({ onLoginSuccess }) => {
 
 const Header = () => {
   const { isAuthenticated, currentUser, logout } = useAuth();
-  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="header">
       <div className="header-content">
@@ -111,7 +103,7 @@ const Header = () => {
         {isAuthenticated && (
           <div className="user-info">
             <span>Mabuhay, {currentUser}!</span>
-            <button onClick={logout} className="logout-button">Logout</button>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
           </div>
         )}
       </div>
@@ -119,31 +111,21 @@ const Header = () => {
   );
 };
 
-const Navigation = ({ activeTab, onTabChange }) => {
+const Navigation = () => {
   const { isAuthenticated } = useAuth();
-  
   if (!isAuthenticated) return null;
-
-  const navItems = ['Home', 'About Us', 'Contact Us'];
 
   return (
     <nav className="navigation">
-      {navItems.map((item) => (
-        <button
-          key={item}
-          onClick={() => onTabChange(item)}
-          className={`nav-button ${activeTab === item ? 'active' : ''}`}
-        >
-          {item}
-        </button>
-      ))}
+      <Link to="/" className="nav-button">Home</Link>
+      <Link to="/about" className="nav-button">About Us</Link>
+      <Link to="/contact" className="nav-button">Contact Us</Link>
     </nav>
   );
 };
 
 const Home = () => {
   const { currentUser } = useAuth();
-  
   return (
     <main className="content">
       <h2 className="content-title">Mabuhay, {currentUser}!</h2>
@@ -162,9 +144,8 @@ const Home = () => {
   );
 };
 
-const About = () => {
-  return (
-    <main className="content">
+const About = () => (
+  <main className="content">
       <h2 className="content-title">Tungkol sa Barangay Arimado Political Party</h2>
       <p className="content-text">
         Nagsimula ang partido namin noong 2020 kasi napagod na kami sa mga pulitikong 
@@ -183,9 +164,8 @@ const About = () => {
         pumila ng tatlong oras para sa barangay clearance. Kasi 2025 na, dapat hindi pa 
         rin tayo nag-s-suffer sa mga prosesong parang galing pa sa Martial Law era.
       </p>
-    </main>
-  );
-};
+  </main>
+);
 
 const Contact = () => {
   const [name, setName] = useState('');
@@ -210,50 +190,29 @@ const Contact = () => {
       <h2 className="content-title">Makipag-ugnayan sa Amin</h2>
       <div className="contact-info">
         <div className="contact-details">
-        <h3>Pano Ka Makakakuha ng Tulong</h3>
-        <p><strong>Address:</strong> 123 Kamote Street, Barangay Arimado, Quezon City 1100</p>
-        <p><strong>Phone:</strong> 0917-BOTO-NAMIN (0917-2686-6246)</p>
-        <p><strong>Email:</strong> kapitanbahay@arimadopolitics.ph</p>
-        <p><strong>Business Hours:</strong> Lunes-Biyernes, 9:00 AM - 6:00 PM (pero kung emergency, text lang)</p>
-      </div>
-        
+          <h3>Pano Ka Makakakuha ng Tulong</h3>
+          <p><strong>Address:</strong> 123 Kamote Street, Barangay Arimado, Quezon City 1100</p>
+          <p><strong>Phone:</strong> 0917-BOTO-NAMIN</p>
+          <p><strong>Email:</strong> kapitanbahay@arimadopolitics.ph</p>
+          <p><strong>Business Hours:</strong> Lunes-Biyernes, 9:00 AM - 6:00 PM</p>
+        </div>
         <div className="contact-form-section">
           <h3>Magpadala ng Reklamo o Suggestion</h3>
           {submitted ? (
-            <div className="success-message">
-              Salamat sa inyong message! Magrereply kami agad!
-            </div>
+            <div className="success-message">Salamat sa inyong message! Magrereply kami agad!</div>
           ) : (
             <div className="contact-form">
               <div className="form-group">
                 <label htmlFor="contact-name">Name:</label>
-                <input
-                  type="text"
-                  id="contact-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                />
+                <input type="text" id="contact-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" />
               </div>
               <div className="form-group">
                 <label htmlFor="contact-email">Email:</label>
-                <input
-                  type="email"
-                  id="contact-email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                />
+                <input type="email" id="contact-email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
               </div>
               <div className="form-group">
                 <label htmlFor="contact-message">Message:</label>
-                <textarea
-                  id="contact-message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  rows="5"
-                  placeholder="Enter your message"
-                ></textarea>
+                <textarea id="contact-message" value={message} onChange={(e) => setMessage(e.target.value)} rows="5" placeholder="Enter your message"></textarea>
               </div>
               <button onClick={handleSubmit} className="submit-button">Send Message</button>
             </div>
@@ -264,51 +223,31 @@ const Contact = () => {
   );
 };
 
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
+
 const App = () => {
-  const { isAuthenticated, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('Home');
-  
-  const handleLogin = () => {
-    setActiveTab('Home');
-  };
-
-  const handleLogout = () => {
-    logout();
-    setActiveTab('Home');
-  };
-
-  const renderContent = () => {
-    if (!isAuthenticated) {
-      return <Login onLoginSuccess={handleLogin} />;
-    }
-
-    switch (activeTab) {
-      case 'Home':
-        return <Home />;
-      case 'About Us':
-        return <About />;
-      case 'Contact Us':
-        return <Contact />;
-      default:
-        return <Home />;
-    }
-  };
-
   return (
-    <div className="app-container">
+    <Router>
       <Header />
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-      {renderContent()}
-    </div>
+      <Navigation />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+        <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 };
 
-const AppWithAuth = () => {
-  return (
-    <Auth>
-      <App/>
-    </Auth>
-  );
-};
+const AppWithAuth = () => (
+  <Auth>
+    <App />
+  </Auth>
+);
 
 export default AppWithAuth;
