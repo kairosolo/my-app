@@ -1,15 +1,131 @@
-import { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import './App.css';
 
-const Header = ({ siteName, className = "header" }) => {
+const AuthContext = createContext();
+
+const Auth = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const users = [
+    { username: 'admin', password: 'admin123' },
+    { username: 'presidentarimadothegreat', password: 'presidentarimadothegreat1' },
+  ];
+
+  const login = (username, password) => {
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+      setIsAuthenticated(true);
+      setCurrentUser(user.username);
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+
   return (
-    <header className={className}>
-      {siteName}
+    <AuthContext.Provider value={{ isAuthenticated, currentUser, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an Auth');
+  }
+  return context;
+};
+
+const Login = ({ onLoginSuccess }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!username || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (login(username, password)) {
+      onLoginSuccess();
+    } else {
+      setError('Invalid username or password');
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-form">
+        <h2>Mag-login sa Barangay Arimado Campaign HQ</h2>
+        <div className="form-container">
+          <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+          </div>
+          {error && <div className="error-message">{error}</div>}
+          <button onClick={handleSubmit} className="login-button">Login</button>
+        </div>
+        <div className="demo-credentials">
+          <h4>Demo Credentials:</h4>
+          <p>Username: admin | Password: admin123</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Header = () => {
+  const { isAuthenticated, currentUser, logout } = useAuth();
+  
+  return (
+    <header className="header">
+      <div className="header-content">
+        <h1>Barangay Arimado Political Party</h1>
+        {isAuthenticated && (
+          <div className="user-info">
+            <span>Mabuhay, {currentUser}!</span>
+            <button onClick={logout} className="logout-button">Logout</button>
+          </div>
+        )}
+      </div>
     </header>
   );
 };
 
-const Navigation = ({ activeTab, onTabChange, navItems = ['Home', 'About Us', 'Contact Us'] }) => {
+const Navigation = ({ activeTab, onTabChange }) => {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) return null;
+
+  const navItems = ['Home', 'About Us', 'Contact Us'];
+
   return (
     <nav className="navigation">
       {navItems.map((item) => (
@@ -25,62 +141,174 @@ const Navigation = ({ activeTab, onTabChange, navItems = ['Home', 'About Us', 'C
   );
 };
 
-const Content = ({ activeTab, contentData }) => {
+const Home = () => {
+  const { currentUser } = useAuth();
   
-  const data = contentData;
-  const currentContent = data[activeTab];
-
   return (
     <main className="content">
-      <h2 className="content-title">
-        {currentContent.title}
-      </h2>
+      <h2 className="content-title">Mabuhay, {currentUser}!</h2>
       <p className="content-text">
-        {currentContent.text}
+        Nandito ka na sa dashboard ng Barangay Arimado Political Party. Dito mo makikita 
+        ang mga plataporma namin para sa halalan, mga realistic na solusyon hindi yung 
+        mga pangako na "magbabago ang lahat" pero walang concrete plan.
+      </p>
+      <p className="content-text">
+        Tignan mo yung About Us para malaman kung sino kami talaga (walang drama, walang 
+        fake achievements), o punta sa Contact Us kung may issue ka sa barangay. 
+        Sumasagot kami sa messages within 48 hours, hindi katulad ng ibang opisina na 
+        "bukas na lang balik ka."
       </p>
     </main>
   );
 };
 
-function App() {
-  const [activeTab, setActiveTab] = useState('Home');
+const About = () => {
+  return (
+    <main className="content">
+      <h2 className="content-title">Tungkol sa Barangay Arimado Political Party</h2>
+      <p className="content-text">
+        Nagsimula ang partido namin noong 2020 kasi napagod na kami sa mga pulitikong 
+        puro salita lang. Yung team namin? Mga totoong tao, dating teachers, may-ari ng 
+        tindahan, at mga community organizer na nakatira talaga dito sa lugar na gusto 
+        naming i-represent.
+      </p>
+      <p className="content-text">
+        Ang focus namin: practical solutions. Ayusin ang basura collection, gawing maayos 
+        ang jeepney routes, at i-streamline ang mga proseso sa government na hindi na 
+        kailangan ng limang pirma para sa isang simple na request. Ang controversial 
+        naming stance? Dapat pumasok sa trabaho ang mga pulitiko.
+      </p>
+      <p className="content-text">
+        Ginagawa din namin na digital ang mga barangay services para hindi na kailangan 
+        pumila ng tatlong oras para sa barangay clearance. Kasi 2025 na, dapat hindi pa 
+        rin tayo nag-s-suffer sa mga prosesong parang galing pa sa Martial Law era.
+      </p>
+    </main>
+  );
+};
 
-  const websiteConfig = {
-    siteName: "Arimado Corporation",
-    navItems: ['Home', 'About Us', 'Contact Us'],
-    contentData: {
-      'Home': {
-        title: 'Welcome Home',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      'About Us': {
-        title: 'About Us',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      'Contact Us': {
-        title: 'Contact Us',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      }
+const Contact = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = () => {
+    if (name && email && message) {
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setName('');
+        setEmail('');
+        setMessage('');
+      }, 3000);
+    }
+  };
+
+  return (
+    <main className="content">
+      <h2 className="content-title">Makipag-ugnayan sa Amin</h2>
+      <div className="contact-info">
+        <div className="contact-details">
+        <h3>Pano Ka Makakakuha ng Tulong</h3>
+        <p><strong>Address:</strong> 123 Kamote Street, Barangay Arimado, Quezon City 1100</p>
+        <p><strong>Phone:</strong> 0917-BOTO-NAMIN (0917-2686-6246)</p>
+        <p><strong>Email:</strong> kapitanbahay@arimadopolitics.ph</p>
+        <p><strong>Business Hours:</strong> Lunes-Biyernes, 9:00 AM - 6:00 PM (pero kung emergency, text lang)</p>
+      </div>
+        
+        <div className="contact-form-section">
+          <h3>Magpadala ng Reklamo o Suggestion</h3>
+          {submitted ? (
+            <div className="success-message">
+              Salamat sa inyong message! Magrereply kami agad!
+            </div>
+          ) : (
+            <div className="contact-form">
+              <div className="form-group">
+                <label htmlFor="contact-name">Name:</label>
+                <input
+                  type="text"
+                  id="contact-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact-email">Email:</label>
+                <input
+                  type="email"
+                  id="contact-email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="contact-message">Message:</label>
+                <textarea
+                  id="contact-message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows="5"
+                  placeholder="Enter your message"
+                ></textarea>
+              </div>
+              <button onClick={handleSubmit} className="submit-button">Send Message</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+};
+
+const App = () => {
+  const { isAuthenticated, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState('Home');
+  
+  const handleLogin = () => {
+    setActiveTab('Home');
+  };
+
+  const handleLogout = () => {
+    logout();
+    setActiveTab('Home');
+  };
+
+  const renderContent = () => {
+    if (!isAuthenticated) {
+      return <Login onLoginSuccess={handleLogin} />;
+    }
+
+    switch (activeTab) {
+      case 'Home':
+        return <Home />;
+      case 'About Us':
+        return <About />;
+      case 'Contact Us':
+        return <Contact />;
+      default:
+        return <Home />;
     }
   };
 
   return (
     <div className="app-container">
-      <Header 
-        siteName={websiteConfig.siteName}
-        className="header"
-      />
-      <Navigation 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab}
-        navItems={websiteConfig.navItems}
-      />
-      <Content 
-        activeTab={activeTab}
-        contentData={websiteConfig.contentData}
-      />
+      <Header />
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
+      {renderContent()}
     </div>
   );
-}
+};
 
-export default App;
+const AppWithAuth = () => {
+  return (
+    <Auth>
+      <App/>
+    </Auth>
+  );
+};
+
+export default AppWithAuth;
