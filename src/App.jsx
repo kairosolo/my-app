@@ -1,74 +1,71 @@
-import React, { useEffect, useRef, useContext, useState } from 'react';
-import { AuthContext, AuthProvider } from './context/AuthContext';
-import LoginForm from './components/LoginForm';
-import UserList from './components/UserList';
 import './App.css';
+import { BrowserRouter, Route, NavLink, Routes, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
-};
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Home from './pages/Home';
+import Article from './pages/Article';
+import FormArticle from './pages/FormArticle';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
-const AppContent = () => {
-  const { isLoggedIn, login, logout } = useContext(AuthContext);
-  const usersRef = useRef([]);
-  const [updateTrigger, setUpdateTrigger] = useState(0);
+function App() {
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('https://reqres.in/api/users?page=1&per_page=12', {
-          headers: {
-            'x-api-key': 'reqres-free-v1'
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const json = await response.json();
-        usersRef.current = json.data;
-        setUpdateTrigger(prev => prev + 1); // Trigger a re-render
-      } catch (error) {
-        console.error("Failed to fetch users:", error);
-        usersRef.current = []; // Fallback to empty array on error
-        setUpdateTrigger(prev => prev + 1);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  const handleLogin = (email, password) => {
-    return login(email, password, usersRef.current);
+  const handleLogout = () => {
+    setUser(null);
   };
 
-  if (!isLoggedIn) {
-    return (
-      <div className="login-container">
-        <LoginForm onLogin={handleLogin} />
-      </div>
-    );
-  }
-
   return (
-    <div className="container">
-      <header className="dashboard-header">
-        <h1>User Dashboard</h1>
-        <button onClick={logout} className="btn btn-secondary">Logout</button>
-      </header>
-      <main>
-        <UserList 
-          usersRef={usersRef} 
-          onDataChange={() => setUpdateTrigger(prev => prev + 1)} 
-        />
-      </main>
+    <div className="App">
+      <BrowserRouter>
+        <nav>
+          <h1>My Articles</h1>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+          
+          {user && <NavLink to="/new">New Article</NavLink>}
+          
+          {/* Guest links */}
+          {!user && <NavLink to="/login">Login</NavLink>}
+          {!user && <NavLink to="/register">Register</NavLink>}
+          
+          {/* User-specific links and greeting */}
+          {user && (
+            <>
+              <span className="user-greeting">Hello, {user.username}</span>
+              <button className="logout-btn" onClick={handleLogout}>Logout</button>
+            </>
+          )}
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home user={user} />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/articles/:urlId" element={<Article user={user} />} />
+
+          <Route 
+            path="/new" 
+            element={user ? <FormArticle user={user} /> : <Navigate to="/login" />}
+          />
+          
+          <Route 
+            path="/login" 
+            element={!user ? <Login onLogin={setUser} /> : <Navigate to="/" />}
+          />
+          <Route 
+            path="/register" 
+            element={!user ? <Register onRegister={setUser} /> : <Navigate to="/" />}
+          />
+
+          <Route path="/*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
-};
+}
 
 export default App;
