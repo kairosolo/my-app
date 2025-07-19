@@ -1,0 +1,108 @@
+.container {
+  padding: 0 2rem 2rem 2rem;
+  max-width: 900px;
+  margin: auto;
+}
+
+.monthSection {
+  background: var(--card-bg);
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.monthHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--bg-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.monthHeader h2 {
+  color: var(--accent-dark);
+  margin: 0;
+}
+
+.monthActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.actionButton {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: var(--accent-dark);
+}
+
+.deleteButton {
+  background-color: var(--danger-color);
+}
+
+.deleteButton:hover {
+  background-color: #c9302c;
+}
+
+.monthSummary {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: var(--bg-color);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.envelopeList {
+  margin-top: 1.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.envelopeItem {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 0.5rem 0;
+}
+.envelopeItem:last-child {
+  border-bottom: none;
+}
+
+.envelopeSummary {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.envelopeSummary:hover {
+  background-color: var(--bg-color);
+}
+
+.envName {
+  font-weight: 600;
+}
+
+.envDetails {
+  color: var(--secondary-text);
+}
+
+.noData {
+  text-align: center;
+  padding: 3rem;
+  color: var(--secondary-text);
+}

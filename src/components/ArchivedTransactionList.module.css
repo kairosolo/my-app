@@ -1,0 +1,30 @@
+.transactionList {
+  list-style: none;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+}
+
+.transactionItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+}
+
+.transactionItem:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+
+.statusText {
+  font-style: italic;
+  color: var(--secondary-text);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  background-color: var(--bg-color);
+  margin-top: 0.75rem;
+  border-radius: 8px;
+}
