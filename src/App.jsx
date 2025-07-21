@@ -1,85 +1,51 @@
-import { useState } from 'react';
-import './App.css';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
-const Header = ({ siteName, className = "header" }) => {
-  return (
-    <header className={className}>
-      {siteName}
-    </header>
-  );
+import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage';
+import Dashboard from './pages/Dashboard';
+import AddGoalPage from './pages/AddGoalPage';
+import GoalDetailPage from './pages/GoalDetailPage';
+import EditGoalPage from './pages/EditGoalPage';
+import AchievementsPage from './pages/AchievementsPage';
+import AnalyticsPage from './pages/AnalyticsPage'; // Import the new page
+
+const ProtectedRoute = ({ children }) => {
+  const { currentUser } = useAuth();
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+  return children;
 };
 
-const Navigation = ({ activeTab, onTabChange, navItems = ['Home', 'About Us', 'Contact Us'] }) => {
-  return (
-    <nav className="navigation">
-      {navItems.map((item) => (
-        <button
-          key={item}
-          onClick={() => onTabChange(item)}
-          className={`nav-button ${activeTab === item ? 'active' : ''}`}
-        >
-          {item}
-        </button>
-      ))}
-    </nav>
-  );
-};
-
-const Content = ({ activeTab, contentData }) => {
-  
-  const data = contentData;
-  const currentContent = data[activeTab];
-
-  return (
-    <main className="content">
-      <h2 className="content-title">
-        {currentContent.title}
-      </h2>
-      <p className="content-text">
-        {currentContent.text}
-      </p>
-    </main>
-  );
+const PublicRoute = ({ children }) => {
+    const { currentUser } = useAuth();
+    if (currentUser) {
+      return <Navigate to="/" />;
+    }
+    return children;
 };
 
 function App() {
-  const [activeTab, setActiveTab] = useState('Home');
-
-  const websiteConfig = {
-    siteName: "Arimado Corporation",
-    navItems: ['Home', 'About Us', 'Contact Us'],
-    contentData: {
-      'Home': {
-        title: 'Welcome Home',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      'About Us': {
-        title: 'About Us',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      'Contact Us': {
-        title: 'Contact Us',
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      }
-    }
-  };
-
   return (
-    <div className="app-container">
-      <Header 
-        siteName={websiteConfig.siteName}
-        className="header"
-      />
-      <Navigation 
-        activeTab={activeTab} 
-        onTabChange={setActiveTab}
-        navItems={websiteConfig.navItems}
-      />
-      <Content 
-        activeTab={activeTab}
-        contentData={websiteConfig.contentData}
-      />
-    </div>
+    <AuthProvider>
+      <Toaster position="top-center" />
+      <Routes>
+        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/signup" element={<PublicRoute><SignUpPage /></PublicRoute>} />
+
+        <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/add-goal" element={<ProtectedRoute><AddGoalPage /></ProtectedRoute>} />
+        <Route path="/goal/:goalId" element={<ProtectedRoute><GoalDetailPage /></ProtectedRoute>} />
+        <Route path="/goal/:goalId/edit" element={<ProtectedRoute><EditGoalPage /></ProtectedRoute>} />
+        <Route path="/achievements" element={<ProtectedRoute><AchievementsPage /></ProtectedRoute>} />
+        <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} /> {/* Add the new route */}
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

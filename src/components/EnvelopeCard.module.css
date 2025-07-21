@@ -1,0 +1,183 @@
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative; 
+  
+  overflow: hidden; 
+}
+
+.card.editing {
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cardHeader h3 {
+  margin: 0;
+}
+
+.balance {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.budget {
+  color: var(--secondary-text);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.spendForm {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.spendInput {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 60px;
+}
+
+.spendButton {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.spendButton:hover {
+  background-color: var(--accent-dark);
+}
+
+.cardHeaderControls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.controlButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.25rem;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.controlButton:hover {
+  opacity: 1;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 1.5rem 0;
+}
+
+.subHeader {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  color: var(--secondary-text);
+  font-weight: 600;
+}
+
+.editEnvelopeForm {
+  padding-bottom: 1rem;
+}
+
+.editHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editNameInput {
+  flex-grow: 1;
+  font-size: 1.25rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+}
+
+.editControls {
+  display: flex;
+}
+
+.editControls button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.editBudgetContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.editBudgetContainer label {
+  font-weight: 600;
+  color: var(--secondary-text);
+}
+
+.editBudgetInput {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100px;
+}
+
+.progressBarContainer {
+  background-color: #e9ecef;
+  border-radius: 999px;
+  height: 10px;
+  margin-top: 1rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease-in-out, background-color 0.5s ease;
+}
+
+.progressBarGreen {
+  background-color: #28a745;
+}
+
+.progressBarYellow {
+  background-color: #ffc107;
+}
+
+.progressBarRed {
+  background-color: #dc3545;
+}

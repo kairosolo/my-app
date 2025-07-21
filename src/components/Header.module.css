@@ -1,0 +1,56 @@
+.header {
+  background-color: var(--card-bg);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.logo a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.link, .activeLink {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--secondary-text);
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.link:hover {
+  color: var(--primary-text);
+}
+
+.activeLink {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+.resetButton {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.resetButton:hover {
+  background-color: var(--accent-dark);
+}

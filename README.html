@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="alkansya-your-goal-oriented-savings-tracker-%F0%9F%92%B0">Alkansya: Your Goal-Oriented Savings Tracker 💰</h1>
+<blockquote>
+<p><strong>Because Dreams Need a Plan</strong></p>
+</blockquote>
+<h2 id="%F0%9F%93%8B-table-of-contents">📋 Table of Contents</h2>
+<ul>
+<li><a href="#about-alkansya">About Alkansya</a></li>
+<li><a href="#key-features">Key Features</a></li>
+<li><a href="#technologies-used">Technologies Used</a></li>
+<li><a href="#project-structure">Project Structure</a></li>
+<li><a href="#firebase-setup">Firebase Setup</a></li>
+<li><a href="#local-development-setup">Local Development Setup</a></li>
+<li><a href="#database-structure">Database Structure</a></li>
+<li><a href="#firebase-security-rules">Firebase Security Rules</a></li>
+<li><a href="#challenges--solutions">Challenges &amp; Solutions</a></li>
+<li><a href="#future-enhancements">Future Enhancements</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<h2 id="about-alkansya">About Alkansya</h2>
+<p>Alkansya is a web application designed to empower Filipino students and young adults in their financial journeys. Inspired by the traditional Filipino piggy bank, Alkansya transforms saving from a daunting task into a motivating and rewarding experience. Instead of just tracking expenses, it focuses on connecting every peso saved to tangible dreams and aspirations.</p>
+<h3 id="%F0%9F%8E%AF-project-objectives">🎯 Project Objectives</h3>
+<ul>
+<li><strong>User-Friendly Platform</strong>: Provide an intuitive interface for creating, tracking, and managing multiple savings goals</li>
+<li><strong>Mindset Transformation</strong>: Shift saving from a restrictive chore to an exciting path towards personal dreams</li>
+<li><strong>Motivation Enhancement</strong>: Foster engagement through visual progress tracking and milestone celebrations</li>
+<li><strong>Financial Insights</strong>: Offer clear analytics to help users understand their saving habits</li>
+</ul>
+<h2 id="key-features">Key Features</h2>
+<h3 id="%F0%9F%94%90-secure-authentication">🔐 <strong>Secure Authentication</strong></h3>
+<p>Full user lifecycle management powered by Firebase Authentication</p>
+<h3 id="%F0%9F%8E%A8-visual-goal-management">🎨 <strong>Visual Goal Management</strong></h3>
+<ul>
+<li>Custom goal names, target amounts, and flexible deadlines</li>
+<li>Personal &quot;My Why&quot; motivational notes</li>
+<li>Progress bars for visual tracking</li>
+<li>Smart placeholder images based on goal names</li>
+</ul>
+<h3 id="%F0%9F%92%B0-smart-money-management">💰 <strong>Smart Money Management</strong></h3>
+<ul>
+<li><strong>Detailed Contribution Tracking</strong>: Record every contribution with timestamps</li>
+<li><strong>Funds Allocation System</strong>: Distribute lump sums across multiple goals efficiently</li>
+<li><strong>Adaptive Savings Rate</strong>: Personalized calculations (per week/day/total needed)</li>
+</ul>
+<h3 id="%F0%9F%8F%86-gamification-system">🏆 <strong>Gamification System</strong></h3>
+<p>Achievement badges for milestones like:</p>
+<ul>
+<li>Creating your first goal</li>
+<li>Making your first deposit</li>
+<li>Completing a goal</li>
+</ul>
+<h3 id="%F0%9F%93%8A-interactive-analytics">📊 <strong>Interactive Analytics</strong></h3>
+<ul>
+<li>Pie charts for goal distribution</li>
+<li>Line charts for savings trends over time</li>
+<li>Visual insights into personal financial progress</li>
+</ul>
+<h3 id="%F0%9F%94%94-push-notifications-ready-for-implementation">🔔 <strong>Push Notifications</strong> <em>(Ready for Implementation)</em></h3>
+<p>Client-side FCM configuration for future reminder and celebration notifications</p>
+<h3 id="%F0%9F%93%88-analytics-integration">📈 <strong>Analytics Integration</strong></h3>
+<p>Firebase Analytics tracks key user events to improve user experience</p>
+<h2 id="technologies-used">Technologies Used</h2>
+<h3 id="frontend">Frontend</h3>
+<ul>
+<li><strong>React.js</strong> - UI library</li>
+<li><strong>React Router DOM</strong> - Client-side routing</li>
+<li><strong>Font Awesome</strong> - Scalable vector icons</li>
+<li><strong>React Hot Toast</strong> - Elegant notifications</li>
+<li><strong>Chart.js &amp; React Chart.js 2</strong> - Data visualization</li>
+</ul>
+<h3 id="backend--cloud-services">Backend &amp; Cloud Services</h3>
+<ul>
+<li><strong>Firebase Authentication</strong> - User management</li>
+<li><strong>Firebase Firestore</strong> - NoSQL database</li>
+<li><strong>Firebase Cloud Messaging</strong> - Push notifications</li>
+<li><strong>Firebase Analytics</strong> - User interaction tracking</li>
+<li><strong>Firebase Storage</strong> - File storage (configured)</li>
+</ul>
+<h3 id="build-tools">Build Tools</h3>
+<ul>
+<li><strong>Vite</strong> - Fast build tool</li>
+<li><strong>Node.js &amp; npm</strong> - Runtime and package manager</li>
+</ul>
+<h3 id="styling">Styling</h3>
+<ul>
+<li><strong>Plain CSS</strong> - Custom modular stylesheets for full control</li>
+</ul>
+<h2 id="project-structure">Project Structure</h2>
+<pre class="hljs"><code><div>Alkansya/
+├── public/                    # Static assets
+│   ├── images/
+│   ├── favicon.ico
+│   └── firebase-messaging-sw.js
+├── scripts/                   # Build scripts
+│   └── generate-sw.cjs
+├── src/
+│   ├── assets/               # Global assets
+│   ├── components/           # Reusable UI components
+│   │   └── AllocationModal.jsx
+│   ├── context/              # React Contexts
+│   │   └── AuthContext.jsx
+│   ├── data/                 # Static data
+│   │   └── achievementData.js
+│   ├── firebase/             # Firebase configuration
+│   │   ├── config.jsx
+│   │   ├── achievementService.js
+│   │   └── seed.js
+│   ├── hooks/                # Custom React Hooks
+│   ├── pages/                # Page components
+│   │   ├── Dashboard.jsx
+│   │   ├── Login.jsx
+│   │   └── Analytics.jsx
+│   ├── App.jsx               # Main app component
+│   ├── index.css             # Global styles
+│   └── main.jsx              # Entry point
+├── .env.local                # Environment variables
+├── .gitignore
+├── package.json
+├── postcss.config.js
+└── vite.config.js
+</div></code></pre>
+<h2 id="firebase-setup">Firebase Setup</h2>
+<h3 id="1-create-firebase-project">1. Create Firebase Project</h3>
+<ol>
+<li>Go to <a href="https://console.firebase.google.com/">Firebase Console</a></li>
+<li>Click &quot;Add project&quot; and follow the setup steps</li>
+</ol>
+<h3 id="2-enable-firebase-services">2. Enable Firebase Services</h3>
+<h4 id="authentication">Authentication</h4>
+<ul>
+<li>Navigate to <code>Build &gt; Authentication &gt; Sign-in method</code></li>
+<li>Enable <strong>Email/Password</strong> authentication</li>
+</ul>
+<h4 id="firestore-database">Firestore Database</h4>
+<ul>
+<li>Go to <code>Build &gt; Firestore Database</code></li>
+<li>Start in <strong>production mode</strong></li>
+<li>Choose your preferred location</li>
+</ul>
+<h4 id="cloud-messaging">Cloud Messaging</h4>
+<ul>
+<li>Navigate to <code>Engage &gt; Messaging &gt; Cloud Messaging</code></li>
+<li>Generate <strong>Web Push certificates</strong> (VAPID key)</li>
+</ul>
+<h4 id="analytics">Analytics</h4>
+<ul>
+<li>Go to <code>Engage &gt; Analytics &gt; Dashboard</code></li>
+<li>Enable <strong>Analytics</strong></li>
+</ul>
+<h3 id="3-get-configuration">3. Get Configuration</h3>
+<ol>
+<li>In Firebase project settings, add a new <strong>Web app</strong></li>
+<li>Copy your <code>firebaseConfig</code> object</li>
+<li>Create <code>.env.local</code> file in project root:</li>
+</ol>
+<pre class="hljs"><code><div>VITE_FIREBASE_API_KEY=&quot;your_api_key&quot;
+VITE_FIREBASE_AUTH_DOMAIN=&quot;your_auth_domain&quot;  
+VITE_FIREBASE_PROJECT_ID=&quot;your_project_id&quot;
+VITE_FIREBASE_STORAGE_BUCKET=&quot;your_storage_bucket&quot;
+VITE_FIREBASE_MESSAGING_SENDER_ID=&quot;your_sender_id&quot;
+VITE_FIREBASE_APP_ID=&quot;your_app_id&quot;
+VITE_FIREBASE_MEASUREMENT_ID=&quot;your_measurement_id&quot;
+VITE_FIREBASE_VAPID_KEY=&quot;your_vapid_key&quot;
+</div></code></pre>
+<blockquote>
+<p>⚠️ <strong>Important</strong>: Ensure <code>.env.local</code> is in your <code>.gitignore</code></p>
+</blockquote>
+<h2 id="local-development-setup">Local Development Setup</h2>
+<h3 id="1-clone-repository">1. Clone Repository</h3>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/YOUR_USERNAME/alkansya.git
+<span class="hljs-built_in">cd</span> alkansya
+</div></code></pre>
+<h3 id="2-install-dependencies">2. Install Dependencies</h3>
+<pre class="hljs"><code><div>npm install
+</div></code></pre>
+<h3 id="3-generate-service-worker">3. Generate Service Worker</h3>
+<pre class="hljs"><code><div>npm run generate-sw
+</div></code></pre>
+<blockquote>
+<p>This script injects Firebase keys into the service worker for FCM</p>
+</blockquote>
+<h3 id="4-start-development-server">4. Start Development Server</h3>
+<pre class="hljs"><code><div>npm run dev
+</div></code></pre>
+<blockquote>
+<p>App will run at <code>http://localhost:5173</code></p>
+</blockquote>
+<h3 id="5-seed-mock-data-optional">5. Seed Mock Data (Optional)</h3>
+<blockquote>
+<p>⚠️ <strong>Warning</strong>: Only use on empty Firebase project</p>
+</blockquote>
+<ol>
+<li>Ensure Firebase Auth users and Firestore collections are empty</li>
+<li>Temporarily uncomment lines from <code>src/main.jsx</code>:<pre class="hljs"><code><div><span class="hljs-keyword">import</span> { seedDatabase } <span class="hljs-keyword">from</span> <span class="hljs-string">'./firebase/seed.js'</span>; 
+<span class="hljs-built_in">window</span>.seedDatabase = seedDatabase;
+</div></code></pre>
+</li>
+<li>Open browser console and run: <code>seedDatabase()</code></li>
+<li>Remove temporary lines after seeding</li>
+<li>Login with: <code>juan.delacruz@example.com</code> / <code>password123</code></li>
+</ol>
+<h2 id="database-structure">Database Structure</h2>
+<h3 id="users-collection-usersuserid">Users Collection: <code>/users/{userId}</code></h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">fcmTokens</span>: [<span class="hljs-string">"token1"</span>, <span class="hljs-string">"token2"</span>],     <span class="hljs-comment">// Push notification tokens</span>
+  <span class="hljs-attr">achievements</span>: [<span class="hljs-string">"first_goal"</span>, <span class="hljs-string">"first_deposit"</span>] <span class="hljs-comment">// Unlocked achievements</span>
+}
+</div></code></pre>
+<h3 id="goals-collection-goalsgoalid">Goals Collection: <code>/goals/{goalId}</code></h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">userId</span>: <span class="hljs-string">"user_id"</span>,                    <span class="hljs-comment">// Goal owner</span>
+  <span class="hljs-attr">goalName</span>: <span class="hljs-string">"New Laptop"</span>,              <span class="hljs-comment">// Goal name</span>
+  <span class="hljs-attr">targetAmount</span>: <span class="hljs-number">50000</span>,                 <span class="hljs-comment">// Target amount (₱)</span>
+  <span class="hljs-attr">currentAmount</span>: <span class="hljs-number">15000</span>,                <span class="hljs-comment">// Current savings</span>
+  <span class="hljs-attr">deadline</span>: Timestamp,                 <span class="hljs-comment">// Target date</span>
+  <span class="hljs-attr">imageUrl</span>: <span class="hljs-string">"https://..."</span>,             <span class="hljs-comment">// Motivational image</span>
+  <span class="hljs-attr">goalReason</span>: <span class="hljs-string">"For my studies"</span>,        <span class="hljs-comment">// Personal motivation</span>
+  <span class="hljs-attr">createdAt</span>: Timestamp,                <span class="hljs-comment">// Creation date</span>
+  <span class="hljs-attr">isDeleted</span>: <span class="hljs-literal">false</span>                     <span class="hljs-comment">// Soft delete flag</span>
+}
+</div></code></pre>
+<h3 id="contributions-subcollection-goalsgoalidcontributionscontributionid">Contributions Subcollection: <code>/goals/{goalId}/contributions/{contributionId}</code></h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">amount</span>: <span class="hljs-number">1500</span>,                        <span class="hljs-comment">// Contribution amount</span>
+  <span class="hljs-attr">date</span>: Timestamp                      <span class="hljs-comment">// Contribution date</span>
+}
+</div></code></pre>
+<h2 id="firebase-security-rules">Firebase Security Rules</h2>
+<h3 id="firestore-rules">Firestore Rules</h3>
+<pre class="hljs"><code><div>rules_version = <span class="hljs-string">'2'</span>;
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    <span class="hljs-comment">// Goals collection rules</span>
+    match /goals/{goalId} {
+      <span class="hljs-comment">// Users can only access their own goals</span>
+      allow read, update, <span class="hljs-attr">delete</span>: <span class="hljs-keyword">if</span> request.auth.uid == resource.data.userId;
+      allow create: <span class="hljs-keyword">if</span> request.auth.uid == request.resource.data.userId;
+
+      <span class="hljs-comment">// Contributions subcollection rules  </span>
+      match /contributions/{contributionId} {
+        <span class="hljs-comment">// Users can only access contributions for their own goals</span>
+        allow read, <span class="hljs-attr">create</span>: <span class="hljs-keyword">if</span> request.auth.uid == 
+          <span class="hljs-keyword">get</span>(/databases/$(database)/documents/goals/$(goalId)).data.userId;
+      }
+    }
+    
+    // Users collection rules
+    match /users/{userId} {
+      <span class="hljs-comment">// Users can only access their own user document</span>
+      allow read, <span class="hljs-attr">write</span>: <span class="hljs-keyword">if</span> request.auth.uid == userId;
+    }
+  }
+}
+</div></code></pre>
+<h3 id="storage-rules">Storage Rules</h3>
+<pre class="hljs"><code><div>rules_version = <span class="hljs-string">'2'</span>;
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /images/{userId}/{fileName} {
+      allow read;  <span class="hljs-comment">// Public read access for images</span>
+      allow write: <span class="hljs-keyword">if</span> request.auth != <span class="hljs-literal">null</span> &amp;&amp; 
+                   request.resource.size &lt; <span class="hljs-number">5</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>; <span class="hljs-comment">// 5MB limit</span>
+    }
+  }
+}
+</div></code></pre>
+<h2 id="challenges--solutions">Challenges &amp; Solutions</h2>
+<h3 id="%F0%9F%8E%A8-ui-library-configuration-conflicts">🎨 UI Library Configuration Conflicts</h3>
+<p><strong>Problem</strong>: Initial attempts with Tailwind CSS and Chakra UI led to build errors and dependency conflicts with Vite.</p>
+<p><strong>Solution</strong>: Switched to plain CSS with custom modular stylesheets. This eliminated all build errors and provided complete control over styling.</p>
+<h3 id="%F0%9F%94%91-api-key-exposure-prevention">🔑 API Key Exposure Prevention</h3>
+<p><strong>Problem</strong>: Firebase Cloud Messaging service worker required hardcoded API keys, risking exposure in Git history.</p>
+<p><strong>Solution</strong>: Created a Node.js build script that dynamically injects API keys from <code>.env.local</code> into the service worker at build time, keeping keys out of version control.</p>
+<h3 id="%F0%9F%93%85-date-based-calculation-accuracy">📅 Date-Based Calculation Accuracy</h3>
+<p><strong>Problem</strong>: &quot;Savings per week&quot; calculations were producing incorrect results due to time-of-day differences and rounding errors.</p>
+<p><strong>Solution</strong>: Rewrote calculation logic to use whole calendar days and implemented adaptive display (per week/day/total needed) based on deadline urgency.</p>
+<h3 id="%F0%9F%9B%A1%EF%B8%8F-firestore-security--permissions">🛡️ Firestore Security &amp; Permissions</h3>
+<p><strong>Problem</strong>: Complex permission errors with subcollections and race conditions during database seeding.</p>
+<p><strong>Solution</strong>:</p>
+<ul>
+<li>Restructured Firestore Security Rules with nested <code>match</code> blocks</li>
+<li>Used <code>get()</code> function to link subcollection permissions to parent documents</li>
+<li>Implemented two-phase commit with <code>writeBatch</code> and <code>onAuthStateChanged</code> for seeding</li>
+</ul>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<ul>
+<li><strong>🔄 Recurring Contributions</strong>: Automatic or reminder-based recurring deposits</li>
+<li><strong>📂 Goal Categories</strong>: Organize goals by category (Education, Travel, Emergency)</li>
+<li><strong>💸 Expense Tracking</strong>: Link expenses back to savings goals</li>
+<li><strong>📚 Financial Education</strong>: Personalized saving tips based on user progress</li>
+<li><strong>🎨 Theming</strong>: Custom color themes and dashboard layouts</li>
+<li><strong>🛡️ Firebase App Check</strong>: Enhanced security for production deployments</li>
+</ul>
+<h2 id="license">License</h2>
+<p>This project is licensed under the MIT License. See the <a href="LICENSE.html">LICENSE</a> file for details.</p>
+<h2 id="contact">Contact</h2>
+<p>🐙 <a href="https://github.com/kairosolo">GitHub Profile</a></p>
+
+</body>
+</html>
